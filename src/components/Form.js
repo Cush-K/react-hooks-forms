@@ -4,6 +4,7 @@ function Form() {
   const [formData, setFormData] = useState({
     firstName: "John",
     lastName: "Henry",
+    admin: false
   });
 
   const [submittedData, setSubmittedData] = useState([]);
