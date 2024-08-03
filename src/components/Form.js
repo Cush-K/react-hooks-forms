@@ -1,42 +1,40 @@
 import React, { useState } from "react";
 
 function Form() {
-  const [firstName, setFirstName] = useState("Sylvia");
-  const [lastName, setLastName] = useState("Woods");
+  const [formData, setFormData] = useState({
+    firstName: "John",
+    lastName: "Henry",
+  });
+
   const [submittedData, setSubmittedData] = useState([]);
   const [errors, setErrors] = useState([])
 
-  function handleFirstName(e) {
-    setFirstName(e.target.value);
-  }
+  function handleChange(e) {
+    const name = e.target.name;
+    const value = e.target.value;
 
-  function handleLastName(e) {
-    setLastName(e.target.value);
+    if(e.target.type === "checkbox"){
+      value = e.target.checked;
+    }
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   }
 
   function handleSubmit(e){
     e.preventDefault();
-
-    if (firstName.length > 0){
-    const formData = {
-      firstName: firstName,
-      lastName: lastName
-    };
+  
     const dataArray = [...submittedData, formData];
     setSubmittedData(dataArray);
-    setFirstName("");
-    setLastName("");
     setErrors([])
-  }else{
-    setErrors(["First name is required!"])
-  }
-
-}
+  } 
 
   const listOfSubmissions = submittedData.map((data, index) => {
     return (
       <div key={index}>
-        {data.firstName} {data.lastName}
+        {data.firstName} {data.lastName} {data.admin}
       </div>
     );
   });
@@ -44,8 +42,24 @@ function Form() {
   return (
     <div>
     <form onSubmit={handleSubmit}>
-      <input type="text" onChange={handleFirstName} value={firstName} />
-      <input type="text" onChange={handleLastName} value={lastName} />
+      <input 
+        type="text" 
+        name = "firstName"
+        value={formData.firstName} 
+        onChange={handleChange} 
+      />
+      <input 
+        type="text" 
+        name = "lastName"
+        value={formData.lastName} 
+        onChange={handleChange} 
+      />
+      <input
+        type="checkbox"
+        name="admin"
+        onChange={handleChange}
+        checked={formData.admin}
+      />
       <button type="submit">Submit</button>
     </form>
       {errors.length > 0
